@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>HTML to Image Converter</title>
+    <link rel="icon" href="assets/img/healer404logo.ico" type="icon" >
+
+    <!-- This script should be placed in the head tags to work -->
+    <script type="text/javascript" src="assets/lib/html2canvas/html2canvas.js"></script>
+    <!-- END This script should be placed in the head tags to work -->
+
+    <!-- Custom Style -->
+    <style>
+        .container{
+            width: 300px;
+            height: 300px;
+            background: green;
+            padding: 10px;
+            text-align: center;
+        }
+        .container-content{
+            border: 10px solid darkgreen;
+            width: 280px;
+            height: 280px;
+        }
+        .container-content h1{
+            font-family: "Roboto Black", sans-serif;
+            font-weight: bolder;
+            color: snow;
+            letter-spacing: 2px;
+        }
+        hr{
+            background: snow;
+            height: 1px;
+            width: 70%;
+            border: 1px snow solid;
+        }
+        .container-content p{
+            color: snow;
+            font-size: 1.5rem;
+        }
+        #saveImage{
+            margin-top: 30px;
+            padding: 10px;
+            background: dodgerblue;
+            color: snow;
+            border-radius: 5px;
+        }
+        #saveImage:hover,
+        #saveImage:focus{
+            background: royalblue;
+            transition: 0.6s;
+            cursor: pointer;
+        }
+    </style>
+    <!-- END Custom Style -->
+
+</head>
+<body>
+
+    <center>
+        <h1>Project DAPO Image Maker</h1>
+        <div class="container" id='container'>
+            <div class="container-content">
+                <h1>Project: DAPO</h1>
+                <hr>
+                <p>
+                    Thank you for contributing<br>
+                    your data to us. :)
+                </p>
+            </div>
+        </div>
+
+        <input type='button' id='saveImage' value='Save Image' onclick='saveImage();' ><br/>
+    </center>
+
+<!-- Scripts Section -->
+
+    <!-- This script must be included for the AJAX to work -->
+    <script src="assets/lib/Jquery/jquery3.4.1.min.js"></script>
+    <!-- END This script must be included for the AJAX to work -->
+
+    <!-- Custom script for generating image and saving it to the server -->
+    <script type='text/javascript'>
+        function saveImage(){
+            html2canvas(document.getElementById('container')).then(function(canvas) {
+                document.body.appendChild(canvas);
+
+                var base64URL = canvas.toDataURL('image/jpeg').replace('image/jpeg', 'image/octet-stream');
+
+                $.ajax({
+                    url: 'save_image_process.php',
+                    type: 'post',
+                    data: {image: base64URL},
+                    success: function(data){
+                        console.log('Upload successfully');
+                    }
+                });
+            });
+        }
+    </script>
+    <!-- END Custom script for generating image and saving it to the server -->
+
+<!-- END Scripts Section -->
+</body>
+</html>
